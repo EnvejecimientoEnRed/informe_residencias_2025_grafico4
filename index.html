@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Distribución de plazas residenciales por provincia según tamaño del centro</title>
+
+<style>
+   body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 25px 20px;
+    background: #ffffff;
+    color: #333333;
+}
+
+.contenedor {
+    max-width: 1100px;
+    margin: auto;
+}
+
+h1 {
+    font-size: 25px;
+    margin-bottom: 10px;
+}
+
+.cabecera {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 10px;
+}
+
+.cabecera h1 {
+    margin: 0 0 10px 0;
+}
+
+.cabecera h4 {
+    margin: 0;
+    font-weight: normal;
+    color: #666666;
+}
+
+.cabecera img {
+    max-width: 147px;
+    max-height: 87px;
+    object-fit: contain;
+}
+
+.descripcion {
+    color: #666666;
+    margin-bottom: 18px;
+}
+
+.botones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 18px;
+}
+
+.botones button {
+    padding: 8px 14px;
+    border: 1px solid #d5d5d5;
+    border-radius: 4px;
+    background: #eeeeee;
+    color: #444444;
+    font-size: 13px;
+    font-weight: normal;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.botones button:hover {
+    background: #dddddd;
+}
+
+.botones button.activo {
+    background: #d0d0d0;
+    color: #222222;
+    border-color: #bcbcbc;
+    font-weight: bold;
+}
+
+.mapa {
+    width: 100%;
+    ;
+}
+
+.mapa iframe {
+    width: 0;
+    min-width: 100% !important;
+    border: none;
+}
+
+@media (max-width: 650px) {
+    .mapa iframe {
+        height: 420px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="contenedor">
+
+    <div class="cabecera">
+        <div>
+            <h1>Distribución de plazas residenciales por provincia según tamaño del centro</h1>
+            <h4>Datos de diciembre de 2025</h4>
+        </div>
+
+        <img src="logo.png" alt="Logo de Envejecimiento en red">
+    </div>
+
+    <p class="descripcion">
+        Pulse en los botones para filtrar el mapa por tamaño del centro.
+    </p>
+
+    <div class="botones">
+
+        <button class="activo"
+        onclick="cambiarMapa('menos25', this)">
+            Menos de 25 plazas
+        </button>
+
+        <button
+        onclick="cambiarMapa('25a49', this)">
+            25 - 49
+        </button>
+
+        <button
+        onclick="cambiarMapa('50a99', this)">
+            50 - 99
+        </button>
+
+        <button
+        onclick="cambiarMapa('100omas', this)">
+            100 ó más
+        </button>
+
+    </div>
+
+    <div class="mapa">
+        <iframe
+            id="mapa"
+            src="https://datawrapper.dwcdn.net/Dh7Zv/10/"
+            title="Mapa interactivo por provincias"
+            scrolling="no"
+            frameborder="0"
+            style="width: 0; min-width: 100% !important; border: none;"
+            height="460">
+        </iframe>
+    </div>
+
+</div>
+
+<script>
+
+window.addEventListener("message", function(event) {
+    if (typeof event.data["datawrapper-height"] !== "undefined") {
+        const iframes = document.querySelectorAll("iframe");
+
+        for (const chartId in event.data["datawrapper-height"]) {
+            for (let i = 0; i < iframes.length; i++) {
+                if (iframes[i].contentWindow === event.source) {
+                    iframes[i].style.height =
+                        event.data["datawrapper-height"][chartId] + "px";
+                }
+            }
+        }
+    }
+});
+const mapas = {
+    menos25: "https://datawrapper.dwcdn.net/Dh7Zv/10/",
+
+    "25a49": "https://datawrapper.dwcdn.net/zmseO/1/",
+
+    "50a99": "https://datawrapper.dwcdn.net/rRFN9/1/",
+
+    "100omas": "https://datawrapper.dwcdn.net/OgSgJ/1/"
+};
+
+function cambiarMapa(categoria, boton) {
+
+    document.getElementById("mapa").src = mapas[categoria];
+
+    document.querySelectorAll(".botones button")
+        .forEach(b => b.classList.remove("activo"));
+
+    boton.classList.add("activo");
+}
+
+</script>
+
+</body>
+</html>
